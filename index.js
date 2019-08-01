@@ -176,6 +176,72 @@ app.post('/shareitee/logout', (request, response) => {
 
 });
 
+//form to fill in itinerary
+app.get('/shareitee/:username/new', (request, response)=>{
+    console.log("iti form");
+    response.render('form');
+});
+
+//adding itinerary to tables
+app.post('/shareitee/:username/new', (request, response)=>{
+    console.log("collect info in form");
+    console.log(request.body);
+    console.log(request.params);
+    let username = request.params.username;
+    console.log(username);
+
+//getting user_id
+    const queryString3 = "SELECT user_id from users WHERE username=$1";
+    const values3 = [username];
+
+    pool.query(queryString3, values3, (err,result) => {
+        console.log(result.rows[0]);
+        let userId = result.rows[0].user_id;
+        console.log(userId);
+
+
+//add a row into itineraries table
+    const queryString1 = "INSERT INTO itineraries (itiname, country, season, experience, user_id, city) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+
+    const values = [request.body.itiName, request.body.country, request.body.seasons, request.body.experience, userId, request.body.city];
+
+    pool.query(queryString1, values, (err, result) => {
+        console.log("adding to iti table");
+        console.log(result.rows[0] );
+        if (err) {
+            console.error('query error:', err.stack);
+            response.send( 'query error' );
+        } else {
+            console.log('query result:', result.rows);
+            let itiId = result.rows[0].iti_id;
+
+            let detailsArr = [request.body.day1, request.body.day2, request.body.day3, request.body.day4];
+
+//then add a row into details table
+            const queryString2 = "INSERT INTO details (day, places, iti_id) VALUES ($1, $2, $3) RETURNING *";
+
+            for (var i = 0; i < detailsArr.length; i++) {
+                if (detailsArr[i].length > 0) {
+                    let values2 = [i+1, detailsArr[i], itiId];
+                    pool.query(queryString2, values2, (err, result) => {
+                        if (err) {
+                            console.error('query error:', err.stack);
+                            response.send( 'query error' );
+                        } else {
+                            console.log('query result:', result.rows);
+                        }
+                    });
+                }
+                if (i === 3) {
+                    response.redirect('/shareitee/'+username);
+                }
+            }
+        }
+    });
+
+});
+});
+
 
 
 // Listen to requests on port 3000
