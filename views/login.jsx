@@ -10,8 +10,8 @@ class Login extends React.Component {
 
             <div className="row">
                 <div className="col-2 offset-3">
-                    <p>New user</p>
-                    <form method="POST">
+                    <h5>New user</h5>
+                    <form method="POST" action="/shareitee/register">
                         <div className="form-group row">
                             <input name="username1" type="text" className="form-control" placeholder="User name"/>
                         </div>
@@ -24,8 +24,8 @@ class Login extends React.Component {
                     </form>
                 </div>
                 <div className="col-2 offset-1">
-                    <p>Existing user</p>
-                    <form method="POST">
+                    <h5>Existing user</h5>
+                    <form method="POST" action="/shareitee/login">
                         <div className="form-group row">
                             <input name="username2" type="text" className="form-control" placeholder="User name"/>
                         </div>

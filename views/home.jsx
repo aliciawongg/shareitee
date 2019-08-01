@@ -5,8 +5,6 @@ class Home extends React.Component {
   render() {
      console.log('homepage');
 
-     var url2 = "shareitee/login"
-
     return (
         <Default>
         <div className="bg-image"></div>
@@ -29,8 +27,10 @@ class Home extends React.Component {
 
                         <p>need a travel itinerary for that upcoming trip? </p>
                         <p>have an itinerary to share with others?</p>
-                        <a className="btn btn-secondary" href={url2} role="button">Get started</a>
 
+                        <form action="/shareitee/login" method="GET">
+                        <button className="btn btn-secondary" type="submit">Get started</button>
+                        </form>
                     </div>
 
                 </div>

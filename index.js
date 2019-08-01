@@ -59,11 +59,14 @@ app.get('/shareitee', (request, response) => {
 
 });
 
+//form to register, log in
 app.get('/shareitee/login',(request, response)=>{
+  console.log("show login & register page");
   response.render('login');
 })
 
-app.post('/shareitee/login', (request, response)=>{
+//user register
+app.post('/shareitee/register', (request, response)=>{
   console.log("hashing password");
   console.log(request.body);
   // hash the password
@@ -79,52 +82,97 @@ app.post('/shareitee/login', (request, response)=>{
     console.log(result.rows[0] );
 
     response.cookie('loggedin', true);
+    response.cookie('user_id', result.rows[0].username);
 
-    response.render('dashboard');
+    const data = {
+            userId : result.rows[0].user_id,
+            userName : result.rows[0].username,
+        };
+
+    console.log(data);
+    response.redirect('/shareitee/'+result.rows[0].username);
   });
 })
 
 
+//user sign in
 app.post('/shareitee/login', (request, response)=>{
-  const queryString = "SELECT * FROM users WHERE username=$1";
+    console.log('authenticating user');
+    console.log(request.body);
 
-  const values = [request.body.username2];
+    const queryString = "SELECT * FROM users WHERE username=$1";
+
+    const values = [request.body.username2];
+
+    pool.query(queryString, values, (err, result) => {
+
+        if( err ){
+          console.log( "error", err );
+        }else{
+          console.log(result.rows[0]);
+          let hashedPassword = sha256( request.body.password2 + SALT );
+          if(result.rows[0].password === hashedPassword){
+
+            var user_id = result.rows[0].user_id;
+
+            console.log("matched")
+
+            // let currentSessionCookie = sha256( user_id + 'logged_id' + SALT );
+
+            response.cookie('loggedin', true);
+            response.cookie('user_id', result.rows[0].username);
+
+          }else{
+            console.log("something is not right")
+
+          }
+        response.redirect('/shareitee/'+result.rows[0].username);
+        }
+
+    });
+
+  });
+
+
+//
+app.get('/shareitee/:username', (request, response)=>{
+  console.log("showing user's dashboard");
+
+  let name = request.params.username;
+
+  const queryString = "SELECT * from users WHERE username=$1";
+
+  let values=[name];
+
 
   pool.query(queryString, values, (err, result) => {
 
-    if( err ){
-      console.log( "error", err );
-    }else{
-      let hashedPassword = sha256( request.body.password2 + SALT );
-      if(result.rows[0].password === hashedPassword){
-
-        var user_id = result.rows[0].id;
-
-        console.log("matched")
-
-        let currentSessionCookie = sha256( user_id + 'logged_id' + SALT );
+   if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result);
 
 
-        response.cookie('loggedin', currentSessionCookie);
-        response.cookie('user_id', user_id);
-      }else{
-        console.log("something is not right")
+    const data = {
+            userId : result.rows[0].user_id,
+            userName : result.rows[0].username,
+        };
 
-      }
+        console.log(data);
+    response.render('dashboard', data);
+}
+})
 
-    response.render('dashboard');
-
-    }
-
-  });
 })
 
 app.post('/shareitee/logout', (request, response) => {
     console.log("clicked log out");
 
 
-        response.clearCookie('username');
-        response.send('you have logged out');
+        response.clearCookie('user_id');
+        response.clearCookie('loggedin');
+        response.redirect('/shareitee/login');
 
 });
 
