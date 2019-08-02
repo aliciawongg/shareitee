@@ -4,13 +4,26 @@ var Default = require('./layouts/default');
 class Dashboard extends React.Component {
   render() {
      console.log('Log in page');
-     var url = "/shareitee/"+this.props.userName;
-     var url2 = "/shareitee/"+this.props.userName + "/new";
+     var url = "/shareitee/"+this.props.userIti[0].username;
+     var url2 = url + "/new";
+     var url3 = url + "/search";
+     let itiList = this.props.userIti.map(iti => {
+        return (
+            <div>
+            <li><a href={`/shareitee/${iti.username}/${iti.iti_id}`}>{`${iti.itiname}`}</a></li>
+
+            </div>)
+       console.log(itiList);
+    });
     return (
         <Default>
 
-            <p>{this.props.userName}'s Dashboard</p>
-
+            <h3>{this.props.userIti[0].username}'s Dashboard</h3>
+            <h4>Your itineraries</h4>
+            <ul>{itiList}</ul>
+             <form action={url3} method="GET">
+            <input type="submit" value="Search"/>
+             </form>
              <form action="/shareitee/logout" method="POST">
             <input type="submit" value="Log out"/>
              </form>
@@ -26,3 +39,6 @@ class Dashboard extends React.Component {
 module.exports = Dashboard;
 
 //3 ways to search
+                // <a href={`/shareitee/${this.props.userIti[0].username}/${iti.iti_id}`}>
+                // <li>{iti.itiname}</li>
+                // </a>

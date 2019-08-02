@@ -134,16 +134,17 @@ app.post('/shareitee/login', (request, response)=>{
   });
 
 
-//
+//after log in, display user's submitted itineraries and option to submit more iti
 app.get('/shareitee/:username', (request, response)=>{
   console.log("showing user's dashboard");
 
   let name = request.params.username;
+  console.log(name);
 
-  const queryString = "SELECT * from users WHERE username=$1";
+  const queryString = "SELECT users.user_id, users.username, itineraries.iti_id, itineraries.itiname FROM itineraries INNER JOIN users ON (users.user_id = itineraries.user_id) WHERE users.username=$1";
 
   let values=[name];
-
+  console.log(values);
 
   pool.query(queryString, values, (err, result) => {
 
@@ -151,16 +152,15 @@ app.get('/shareitee/:username', (request, response)=>{
         console.error('query error:', err.stack);
         response.send( 'query error' );
         } else {
-        console.log('query result:', result);
+        console.log('query result:', result.rows);
 
 
-    const data = {
-            userId : result.rows[0].user_id,
-            userName : result.rows[0].username,
-        };
-
+        const data = {
+            userIti: result.rows
+        }
         console.log(data);
-    response.render('dashboard', data);
+        // response.send('user dashboard');
+        response.render('dashboard', data);
 }
 })
 
@@ -175,6 +175,46 @@ app.post('/shareitee/logout', (request, response) => {
         response.redirect('/shareitee/login');
 
 });
+
+//from search button on user dashboard. display search categories
+app.get('/shareitee/:username/search', (request, response) => {
+    console.log("search itineraries");
+
+    const queryString = "SELECT iti_id, itiname, season, experience FROM itineraries";
+
+
+  pool.query(queryString, (err, result) => {
+
+   if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result.rows);
+
+
+        const data = {
+            searchResult: result.rows
+        }
+        console.log(data);
+
+response.send(data);
+        //response.render('search', data);
+}
+});
+});
+
+// app.post('/shareitee/search', (request, response) => {
+//     console.log("display search results");
+
+//     //if input recieved for country
+//     queryString = "SELECT from itineraries"
+
+
+
+
+//         response.render('display', data);
+
+// });
 
 //form to fill in itinerary
 app.get('/shareitee/:username/new', (request, response)=>{
@@ -245,7 +285,11 @@ app.post('/shareitee/:username/new', (request, response)=>{
 
 
 // Listen to requests on port 3000
- const server = app.listen(3000, () => console.log('~~~ Tuning in to port 3000 ~~~'));
+
+const PORT = process.env.PORT || 3000;
+
+const server = app.listen(PORT, () => console.log('~~~ Tuning in to the waves of port '+PORT+' ~~~'));
+
 
  let onClose = function(){
 
