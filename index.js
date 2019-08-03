@@ -66,6 +66,8 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jsx');
 app.engine('jsx', reactEngine);
 
+
+const countryList = require('country-list');
 /**
  * ===================================
  * Routes
@@ -85,10 +87,10 @@ app.get('/shareitee', (request, response) => {
 });
 
 //form to register, log in
-app.get('/shareitee/login',(request, response)=>{
-  console.log("show login & register page");
-  response.render('login');
-})
+// app.get('/shareitee/login',(request, response)=>{
+//   console.log("show login & register page");
+//   response.render('login');
+// })
 
 //user register
 app.post('/shareitee/register', (request, response)=>{
@@ -159,35 +161,48 @@ app.post('/shareitee/login', (request, response)=>{
   });
 
 
-//after log in, display user's submitted itineraries and option to submit more iti
+//after log in, display user's page with search and nav bar
 app.get('/shareitee/:username', (request, response)=>{
   console.log("showing user's dashboard");
 
-  let name = request.params.username;
-  console.log(name);
+  // let name = request.params.username;
+  // console.log(name);
 
-  const queryString = "SELECT users.user_id, users.username, itineraries.iti_id, itineraries.itiname FROM itineraries INNER JOIN users ON (users.user_id = itineraries.user_id) WHERE users.username=$1";
+  // const queryString1 = "SELECT user_id, username FROM users WHERE username=$1";
 
-  let values=[name];
-  console.log(values);
+  // let values1=[name];
+  // console.log(values1);
 
-  pool.query(queryString, values, (err, result) => {
+  // pool.query(queryString1, values1, (err, result) => {
 
-   if (err) {
-        console.error('query error:', err.stack);
-        response.send( 'query error' );
+  //   if (err) {
+  //       console.error('incorrect username or password:', err.stack);
+  //       response.send( 'query error' );
+  //   } else {
+  //       console.log('query result:', result.rows);
+  //       const data1 = {
+  //           currentUser: result.rows
+  //       }
+  //       console.log(data1);
+
+    const queryString = "SELECT DISTINCT country, season, experience FROM itineraries";
+
+    pool.query(queryString, (err, result) => {
+
+        if (err) {
+            console.error('query error:', err.stack);
+            response.send( 'query error' );
         } else {
-        console.log('query result:', result.rows);
+            console.log('query result:', result.rows);
+            const data = {
+                    allIti: result.rows
+            }
+            console.log(data);
 
-
-        const data = {
-            userIti: result.rows
+                //response.send('user dashboard');
+            response.render('dashboard', data);
         }
-        console.log(data);
-        // response.send('user dashboard');
-        response.render('dashboard', data);
-}
-})
+    });
 
 })
 
@@ -197,15 +212,47 @@ app.post('/shareitee/logout', (request, response) => {
 
         response.clearCookie('user_id');
         response.clearCookie('loggedin');
-        response.redirect('/shareitee/login');
+        response.redirect('/shareitee');
 
 });
+
+
+// app.get('/shareitee/:username/seelist', (request, response)=>{
+//   console.log("showing user's dashboard");
+
+//   let name = request.params.username;
+//   console.log(name);
+
+//   const queryString = "SELECT users.user_id, users.username, itineraries.iti_id, itineraries.itiname FROM users INNER JOIN itineraries ON (users.user_id = itineraries.user_id) WHERE users.username=$1";
+
+//   let values=[name];
+//   console.log(values);
+
+//   pool.query(queryString, values, (err, result) => {
+
+//    if (err) {
+//         console.error('query error:', err.stack);
+//         response.send( 'query error' );
+//         } else {
+//         console.log('query result:', result.rows);
+
+
+//         const data = {
+//             userIti: result.rows
+//         }
+//         console.log(data);
+//         // response.send('user dashboard');
+//         response.render('dashboard', data);
+// }
+// })
+
+// })
 
 //from search button on user dashboard. display search categories
 app.get('/shareitee/:username/search', (request, response) => {
     console.log("search itineraries");
 
-    const queryString = "SELECT iti_id, itiname, season, experience FROM itineraries";
+    const queryString = "SELECT DISTINCT country, season, experience FROM itineraries";
 
 
   pool.query(queryString, (err, result) => {
@@ -218,12 +265,12 @@ app.get('/shareitee/:username/search', (request, response) => {
 
 
         const data = {
-            searchResult: result.rows
+            allIti: result.rows
         }
         console.log(data);
 
-response.send(data);
-        //response.render('search', data);
+        //response.send(data);
+        response.render('search', data);
 }
 });
 });

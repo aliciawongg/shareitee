@@ -9,7 +9,7 @@ class Login extends React.Component {
         <Default>
 
             <div className="row">
-                <div className="col-2 offset-3">
+                <div className="col-2 offset-3" id="register">
                     <h5>New user</h5>
                     <form method="POST" action="/shareitee/register">
                         <div className="form-group row">
@@ -23,7 +23,7 @@ class Login extends React.Component {
                         </div>
                     </form>
                 </div>
-                <div className="col-2 offset-1">
+                <div className="col-2 offset-1" id="login">
                     <h5>Existing user</h5>
                     <form method="POST" action="/shareitee/login">
                         <div className="form-group row">

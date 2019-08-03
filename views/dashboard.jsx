@@ -1,44 +1,76 @@
 var React = require("react");
+const { getCode, getName } = require('country-list');
 var Default = require('./layouts/default');
+import CountryData from 'country-data'
 
 class Dashboard extends React.Component {
   render() {
-     console.log('Log in page');
-     var url = "/shareitee/"+this.props.userIti[0].username;
-     var url2 = url + "/new";
-     var url3 = url + "/search";
-     let itiList = this.props.userIti.map(iti => {
-        return (
-            <div>
-            <li><a href={`/shareitee/${iti.username}/${iti.iti_id}`}>{`${iti.itiname}`}</a></li>
+     console.log('Logged in and showing search page');
+        let itiByCountry = this.props.allIti.map(iti => {
+            return (
+                <option>{`${getName(iti.country)}`}</option>
+                )
+        });
+        console.log(itiByCountry);
 
-            </div>)
-       console.log(itiList);
-    });
+        let itiBySeason = this.props.allIti.map(iti => {
+            return (
+                <option>{`${iti.season}`}</option>
+                )
+        });
+        let itiByExperience= this.props.allIti.map(iti => {
+            return (
+                <option>{`${iti.experience}`}</option>
+                )
+        });
     return (
         <Default>
 
-            <h3>{this.props.userIti[0].username}'s Dashboard</h3>
-            <h4>Your itineraries</h4>
-            <ul>{itiList}</ul>
-             <form action={url3} method="GET">
-            <input type="submit" value="Search"/>
-             </form>
-             <form action="/shareitee/logout" method="POST">
-            <input type="submit" value="Log out"/>
-             </form>
+            <h3>Hello!</h3>
+              <div className="row">
+                <div className="col-10 offset-1">
+                    <h4>Find an itinerary</h4>
+                    <form method="POST">
+                        <div className="form-row">
+                            <div className="form-group col-4">
+                                <div className="card" width= "18rem">
+                                    <img src="/images/goldengate.jpg" className="card-img-top" height="200px"/>
+                                        <div className="card-body">
+                                            <h5 class="card-title">Country</h5>
+                                            <select>{itiByCountry}</select><br/>
+                                            <a href="#" class="btn btn-outline-danger btn-sm">Go</a>
+                                        </div>
+                                </div>
+                            </div>
 
-            <form action={url2} method="GET">
-            <input type="submit" value="Share iti"/>
-             </form>
+                            <div className="form-group col-4">
+                                <div className="card" width= "18rem">
+                                    <img src="/images/shirakawago.jpg" className="card-img-top" height="200px"/>
+                                        <div className="card-body">
+                                            <h5 class="card-title">Season</h5>
+                                            <select>{itiBySeason}</select><br/>
+                                            <a href="#" class="btn btn-outline-danger btn-sm">Go</a>
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div className="form-group col-4">
+                                <div className="card" width= "18rem">
+                                    <img src="/images/camping.jpg" className="card-img-top" height="200px"/>
+                                        <div className="card-body">
+                                            <h5 class="card-title">Experience</h5>
+                                            <select>{itiByExperience}</select><br/>
+                                            <a href="#" class="btn btn-outline-danger btn-sm">Go</a>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </Default>
     );
   }
 }
 
 module.exports = Dashboard;
-
-//3 ways to search
-                // <a href={`/shareitee/${this.props.userIti[0].username}/${iti.iti_id}`}>
-                // <li>{iti.itiname}</li>
-                // </a>
