@@ -132,9 +132,23 @@ hr {
 	text-transform: uppercase;
 }
 
+.navbar{
+	background-color: #EC7866;
+}
+
+.navbar-brand{
+	text-transform: uppercase;
+}
+
+.main-container{
+	padding-top: 70px;
+}
 
 
-
+.navbar-light .navbar-brand {
+	color: #94E9F2;
+	font-size: 23px;
+}
 
 @media (min-width: 768px) {
   .masthead-brand {

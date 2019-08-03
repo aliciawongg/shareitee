@@ -160,6 +160,14 @@ app.post('/shareitee/login', (request, response)=>{
 
   });
 
+app.get('/shareitee/logout', (request, response) => {
+    console.log("clicked log out");
+
+        response.clearCookie('user_id');
+        response.clearCookie('loggedin');
+        response.redirect('/shareitee');
+
+});
 
 //after log in, display user's page with search and nav bar
 app.get('/shareitee/:username', (request, response)=>{
@@ -194,7 +202,11 @@ app.get('/shareitee/:username', (request, response)=>{
             response.send( 'query error' );
         } else {
             console.log('query result:', result.rows);
+
+            let username = request.cookies['user_id'];
+            console.log(username);
             const data = {
+                    username: username,
                     allIti: result.rows
             }
             console.log(data);
@@ -206,16 +218,76 @@ app.get('/shareitee/:username', (request, response)=>{
 
 })
 
-app.post('/shareitee/logout', (request, response) => {
-    console.log("clicked log out");
 
-
-        response.clearCookie('user_id');
-        response.clearCookie('loggedin');
-        response.redirect('/shareitee');
-
+//form to fill in itinerary
+app.get('/shareitee/:username/new', (request, response)=>{
+    console.log("iti form");
+    let username = request.cookies['user_id'];
+    const data = {
+        username: username,
+    }
+    response.render('form', data);
 });
 
+//adding itinerary to tables
+app.post('/shareitee/:username/new', (request, response)=>{
+    console.log("collect info in form");
+    console.log(request.body);
+    console.log(request.params);
+    let username = request.params.username;
+    console.log(username);
+
+//getting user_id
+    const queryString3 = "SELECT user_id from users WHERE username=$1";
+    const values3 = [username];
+
+    pool.query(queryString3, values3, (err,result) => {
+        console.log(result.rows[0]);
+        let userId = result.rows[0].user_id;
+        console.log(userId);
+
+
+//add a row into itineraries table
+    const queryString1 = "INSERT INTO itineraries (itiname, country, season, experience, user_id, city) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+
+    const values = [request.body.itiName, request.body.country, request.body.seasons, request.body.experience, userId, request.body.city];
+
+    pool.query(queryString1, values, (err, result) => {
+        console.log("adding to iti table");
+        console.log(result.rows[0] );
+        if (err) {
+            console.error('query error:', err.stack);
+            response.send( 'query error' );
+        } else {
+            console.log('query result:', result.rows);
+            let itiId = result.rows[0].iti_id;
+
+            let detailsArr = [request.body.day1, request.body.day2, request.body.day3, request.body.day4];
+
+//then add a row into details table
+            const queryString2 = "INSERT INTO details (day, places, iti_id) VALUES ($1, $2, $3) RETURNING *";
+
+            for (var i = 0; i < detailsArr.length; i++) {
+                if (detailsArr[i].length > 0) {
+                    let values2 = [i+1, detailsArr[i], itiId];
+                    pool.query(queryString2, values2, (err, result) => {
+                        if (err) {
+                            console.error('query error:', err.stack);
+                            response.send( 'query error' );
+                        } else {
+                            console.log('query result:', result.rows);
+                        }
+                    });
+                }
+                if (i === 3) {
+                    response.redirect('/shareitee/'+username);
+                }
+            }
+        }
+    });
+
+});
+});
 
 // app.get('/shareitee/:username/seelist', (request, response)=>{
 //   console.log("showing user's dashboard");
@@ -287,72 +359,6 @@ app.get('/shareitee/:username/search', (request, response) => {
 //         response.render('display', data);
 
 // });
-
-//form to fill in itinerary
-app.get('/shareitee/:username/new', (request, response)=>{
-    console.log("iti form");
-    response.render('form');
-});
-
-//adding itinerary to tables
-app.post('/shareitee/:username/new', (request, response)=>{
-    console.log("collect info in form");
-    console.log(request.body);
-    console.log(request.params);
-    let username = request.params.username;
-    console.log(username);
-
-//getting user_id
-    const queryString3 = "SELECT user_id from users WHERE username=$1";
-    const values3 = [username];
-
-    pool.query(queryString3, values3, (err,result) => {
-        console.log(result.rows[0]);
-        let userId = result.rows[0].user_id;
-        console.log(userId);
-
-
-//add a row into itineraries table
-    const queryString1 = "INSERT INTO itineraries (itiname, country, season, experience, user_id, city) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
-
-    const values = [request.body.itiName, request.body.country, request.body.seasons, request.body.experience, userId, request.body.city];
-
-    pool.query(queryString1, values, (err, result) => {
-        console.log("adding to iti table");
-        console.log(result.rows[0] );
-        if (err) {
-            console.error('query error:', err.stack);
-            response.send( 'query error' );
-        } else {
-            console.log('query result:', result.rows);
-            let itiId = result.rows[0].iti_id;
-
-            let detailsArr = [request.body.day1, request.body.day2, request.body.day3, request.body.day4];
-
-//then add a row into details table
-            const queryString2 = "INSERT INTO details (day, places, iti_id) VALUES ($1, $2, $3) RETURNING *";
-
-            for (var i = 0; i < detailsArr.length; i++) {
-                if (detailsArr[i].length > 0) {
-                    let values2 = [i+1, detailsArr[i], itiId];
-                    pool.query(queryString2, values2, (err, result) => {
-                        if (err) {
-                            console.error('query error:', err.stack);
-                            response.send( 'query error' );
-                        } else {
-                            console.log('query result:', result.rows);
-                        }
-                    });
-                }
-                if (i === 3) {
-                    response.redirect('/shareitee/'+username);
-                }
-            }
-        }
-    });
-
-});
-});
 
 
 
