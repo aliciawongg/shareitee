@@ -115,7 +115,7 @@ body {
 	font-size: 30px;
 }
 
-h3{
+#logintext{
 	font-size: 18px;
 }
 
@@ -148,6 +148,10 @@ hr {
 .navbar-light .navbar-brand {
 	color: #94E9F2;
 	font-size: 23px;
+}
+
+#oneday{
+	max-width: 540px;
 }
 
 @media (min-width: 768px) {

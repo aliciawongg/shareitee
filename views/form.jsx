@@ -22,7 +22,7 @@ class Form extends React.Component {
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
                       <a className="nav-item nav-link" href={url1}>Home</a>
-                      <a className="nav-item nav-link active" href="#">New <span class="sr-only">(current)</span></a>
+                      <a className="nav-item nav-link active">New <span className="sr-only">(current)</span></a>
                       <a className="nav-item nav-link" href={url2}>Current</a>
                       <a className="nav-item nav-link" href={url3}>Log out</a>
                     </div>
@@ -32,15 +32,15 @@ class Form extends React.Component {
                 <div className="row">
                     <div className="col-10 offset-1">
                         <h4>Share Itinerary</h4>
-                        <p>* indicates mandatory fields</p>
+                        <p style={{fontStyle: 'italic'}}><span style={{color:'red'}}>*</span> indicates mandatory fields</p>
                         <form method="POST">
                             <div className="form-group">
-                                <label className="col-form-label">Name of itinerary *</label>
+                                <label className="col-form-label">Name of itinerary <span style={{color:'red'}}>*</span></label>
                                 <input name="itiName" type="text" className="form-control" id="itiName" placeholder="3D2N in Penang"/>
                             </div>
                             <div className="form-row">
                               <div className="form-group col-6">
-                                <label>Country *</label>
+                                <label>Country <span style={{color:'red'}}>*</span></label>
                                 <select className="form-control" id="country" name="country">
 
                                 <option value="AF">Afghanistan</option>
@@ -295,14 +295,14 @@ class Form extends React.Component {
                                 </select>
                               </div>
                               <div className="form-group col-6">
-                                <label>City *</label>
-                                <input type="text" className="form-control" id="city" name="city"/>
+                                <label>City <span style={{color:'red'}}>*</span></label>
+                                <input type="text" className="form-control" id="city" name="city" placeholder="required"/>
                               </div>
                             </div>
                             <div className="form-row">
                               <div className="form-group col-6">
-                                <label>Day 1 *</label>
-                                <input type="text" className="form-control" id="day1" name="day1"/>
+                                <label>Day 1 <span style={{color:'red'}}>*</span></label>
+                                <input type="text" className="form-control" id="day1" name="day1" placeholder="required"/>
                                 <small className="form-text text-muted" style={{fontStyle: 'italic'}}>List up to 3 places in a day.</small>
                               </div>
                               <div className="form-group col-6">

@@ -68,6 +68,7 @@ app.engine('jsx', reactEngine);
 
 
 const countryList = require('country-list');
+const { getCode, getName } = require('country-list');
 /**
  * ===================================
  * Routes
@@ -280,7 +281,7 @@ app.post('/shareitee/:username/new', (request, response)=>{
                     });
                 }
                 if (i === 3) {
-                    response.redirect('/shareitee/'+username);
+                    response.redirect('/shareitee/'+username+'current');
                 }
             }
         }
@@ -289,45 +290,19 @@ app.post('/shareitee/:username/new', (request, response)=>{
 });
 });
 
-// app.get('/shareitee/:username/seelist', (request, response)=>{
-//   console.log("showing user's dashboard");
 
-//   let name = request.params.username;
-//   console.log(name);
+app.get('/shareitee/:username/current', (request, response)=>{
+  console.log("showing user's itineraries");
 
-//   const queryString = "SELECT users.user_id, users.username, itineraries.iti_id, itineraries.itiname FROM users INNER JOIN itineraries ON (users.user_id = itineraries.user_id) WHERE users.username=$1";
+  let name = request.params.username;
+  console.log(name);
 
-//   let values=[name];
-//   console.log(values);
+  const queryString = "SELECT users.user_id, users.username, itineraries.iti_id, itineraries.itiname FROM users INNER JOIN itineraries ON (users.user_id = itineraries.user_id) WHERE users.username=$1";
 
-//   pool.query(queryString, values, (err, result) => {
+  let values=[name];
+  console.log(values);
 
-//    if (err) {
-//         console.error('query error:', err.stack);
-//         response.send( 'query error' );
-//         } else {
-//         console.log('query result:', result.rows);
-
-
-//         const data = {
-//             userIti: result.rows
-//         }
-//         console.log(data);
-//         // response.send('user dashboard');
-//         response.render('dashboard', data);
-// }
-// })
-
-// })
-
-//from search button on user dashboard. display search categories
-app.get('/shareitee/:username/search', (request, response) => {
-    console.log("search itineraries");
-
-    const queryString = "SELECT DISTINCT country, season, experience FROM itineraries";
-
-
-  pool.query(queryString, (err, result) => {
+  pool.query(queryString, values, (err, result) => {
 
    if (err) {
         console.error('query error:', err.stack);
@@ -337,15 +312,147 @@ app.get('/shareitee/:username/search', (request, response) => {
 
 
         const data = {
-            allIti: result.rows
+            userIti: result.rows
+        }
+        console.log(data);
+        // response.send('user dashboard');
+        response.render('userlist', data);
+}
+})
+
+})
+
+//from search button on user dashboard. display search categories
+app.get('/shareitee/search/country', (request, response) => {
+    console.log("list itineraries by selected countries");
+    console.log(request.query.selection);
+
+    let values = [getCode(request.query.selection)];
+    console.log(values);
+    const queryString = "SELECT iti_id, itiname, country FROM itineraries WHERE country=$1";
+
+
+  pool.query(queryString, values, (err, result) => {
+
+   if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result.rows);
+
+        let username = request.cookies['user_id'];
+        console.log(username);
+        const data = {
+            username: username,
+            select: request.query.selection,
+            itiSelect: result.rows
         }
         console.log(data);
 
-        //response.send(data);
-        response.render('search', data);
+        //response.send('list of iti');
+        response.render('searchdisplay', data);
 }
 });
 });
+
+//season
+app.get('/shareitee/search/season', (request, response) => {
+    console.log("list itineraries by selected season");
+    console.log(request.query.selection);
+
+    let values = [request.query.selection];
+    console.log(values);
+    const queryString = "SELECT iti_id, itiname FROM itineraries WHERE season=$1";
+
+
+  pool.query(queryString, values, (err, result) => {
+
+   if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result.rows);
+
+        let username = request.cookies['user_id'];
+        console.log(username);
+        const data = {
+            username: username,
+            select: request.query.selection,
+            itiSelect: result.rows
+        }
+        console.log(data);
+
+        //response.send('list of iti');
+        response.render('searchdisplay', data);
+}
+});
+});
+
+//experience
+app.get('/shareitee/search/experience', (request, response) => {
+    console.log("list itineraries by selected experience");
+    console.log(request.query.selection);
+
+    let values = [request.query.selection];
+    console.log(values);
+    const queryString = "SELECT iti_id, itiname FROM itineraries WHERE experience=$1";
+
+
+  pool.query(queryString, values, (err, result) => {
+
+   if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result.rows);
+
+        let username = request.cookies['user_id'];
+        console.log(username);
+        const data = {
+            username: username,
+            select: request.query.selection,
+            itiSelect: result.rows
+        }
+        console.log(data);
+
+        //response.send('list of iti');
+        response.render('searchdisplay', data);
+}
+});
+});
+
+
+//display info from 1 itinerary
+app.get('/shareitee/itinerary/:id', (request, response)=>{
+  console.log("showing 1 itinerary");
+
+  let id = parseInt(request.params.id);
+  console.log('iti id: ', id);
+
+  const queryString = "SELECT itineraries.iti_id, itineraries.itiname, itineraries.city, details.id, details.day, details.places FROM details INNER JOIN itineraries ON (itineraries.iti_id = details.iti_id) WHERE itineraries.iti_id="+id+"ORDER BY details.day ASC";
+
+  pool.query(queryString, (err, result) => {
+
+   if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result.rows);
+
+        let username = request.cookies['user_id'];
+
+        const data = {
+            username: username,
+            oneIti: result.rows
+        }
+        console.log(data);
+        //response.send('found the iti');
+        response.render('singleiti', data);
+}
+})
+
+})
+
 
 // app.post('/shareitee/search', (request, response) => {
 //     console.log("display search results");

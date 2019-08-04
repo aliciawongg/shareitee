@@ -43,7 +43,7 @@ class Dashboard extends React.Component {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div className="navbar-nav">
-                      <a className="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                      <a className="nav-item nav-link active">Home <span className="sr-only">(current)</span></a>
                       <a className="nav-item nav-link" href={url1}>New</a>
                       <a className="nav-item nav-link" href={url2}>Current</a>
                       <a className="nav-item nav-link" href={url3}>Log out</a>
@@ -53,15 +53,18 @@ class Dashboard extends React.Component {
             <div className="main-container">
               <div className="col-10 offset-1">
                     <h4>Find an itinerary</h4>
-                    <form method="POST">
+
                         <div className="form-row">
                             <div className="form-group col-4">
                                 <div className="card" width= "18rem">
                                     <img src="/images/goldengate.jpg" className="card-img-top" height="200px"/>
                                         <div className="card-body">
-                                            <h5 class="card-title">Country</h5>
-                                            <select>{itiByCountry}</select><br/>
-                                            <a href={url4} class="btn btn-outline-danger btn-sm">Go</a>
+                                            <h5 className="card-title">Country</h5>
+
+                                            <form action={url4} method="GET">
+                                                <select name="selection">{itiByCountry}</select><br/>
+                                                <input type= "submit" className="btn btn-outline-danger btn-sm" value="Go"/>
+                                            </form>
                                         </div>
                                 </div>
                             </div>
@@ -70,9 +73,11 @@ class Dashboard extends React.Component {
                                 <div className="card" width= "18rem">
                                     <img src="/images/shirakawago.jpg" className="card-img-top" height="200px"/>
                                         <div className="card-body">
-                                            <h5 class="card-title">Season</h5>
-                                            <select>{itiBySeason}</select><br/>
-                                            <a href={url5} class="btn btn-outline-danger btn-sm">Go</a>
+                                            <h5 className="card-title">Season</h5>
+                                            <form action={url5} method="GET">
+                                                <select name="selection">{itiBySeason}</select><br/>
+                                                <input type="submit" className="btn btn-outline-danger btn-sm" value="Go"/>
+                                            </form>
                                         </div>
                                 </div>
                             </div>
@@ -82,13 +87,15 @@ class Dashboard extends React.Component {
                                     <img src="/images/camping.jpg" className="card-img-top" height="200px"/>
                                         <div className="card-body">
                                             <h5 class="card-title">Experience</h5>
-                                            <select>{itiByExperience}</select><br/>
-                                            <a href={url6} class="btn btn-outline-danger btn-sm">Go</a>
+                                            <form action={url6} method="GET">
+                                                <select name="selection">{itiByExperience}</select><br/>
+                                                <input type="submit" className="btn btn-outline-danger btn-sm" value="Go"/>
+                                            </form>
                                         </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+
                 </div>
             </div>
 

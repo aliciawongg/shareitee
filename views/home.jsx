@@ -33,7 +33,7 @@ class Home extends React.Component {
                                 <div className="card-body">
 
                                    <div className="text-center">
-                                        <h3 className="white-text" >
+                                        <h3 className="white-text" id="logintext" >
                                         <img src="/images/air_baloon.svg" height="45px" width="45px" display="inline"/>
                                        New user</h3>
                                         <hr className="hr-light"/>
@@ -52,7 +52,7 @@ class Home extends React.Component {
                                     </form>
 
                                      <div className="text-center">
-                                        <h3 className="white-text">
+                                        <h3 className="white-text" id="logintext">
                                         <img src="/images/cruise.svg" height="45px" width="45px" display="inline"/>
                                         Existing user</h3>
                                         <hr className="hr-light"/>

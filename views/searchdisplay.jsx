@@ -1,27 +1,29 @@
 var React = require("react");
 var Default = require('./layouts/default');
 
-class Userlist extends React.Component {
+class Searchdisplay extends React.Component {
   render() {
-     console.log('Log in page');
+    console.log('showing list of iti based on user selection');
 
-    let username = this.props.userIti[0].username;
+    let itiSelection = this.props.itiSelect.map(iti => {
+        let link = "/shareitee/itinerary/"+iti.iti_id;
+           return (
+            <div>
+                <li><a href={link}>{iti.itiname}</a></li>
+            </div>)
+           console.log(itiSelection);
+    });
+
+    let username = this.props.username;
+
     var url1 = "/shareitee/"+username;
     var url2 = "/shareitee/"+username+"/new";
-    var url3 = "/shareitee/logout";
+    var url3 = "/shareitee/"+username+"/current";
+    var url4 = "/shareitee/logout";
 
-     let itiList = this.props.userIti.map(iti => {
-        let link = "/shareitee/itinerary/"+iti.iti_id;
-        return (
-            <div>
-            <li><a href={link}>{iti.itiname}</a></li>
-
-            </div>)
-        console.log(itiList);
-    });
     return (
-        <Default>
-            <nav className="navbar fixed-top navbar-expand-lg navbar-light">
+       <Default>
+       <nav className="navbar fixed-top navbar-expand-lg navbar-light">
                 <span className="navbar-brand mb-0 h1">{`${username}`}</span>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -30,25 +32,24 @@ class Userlist extends React.Component {
                     <div className="navbar-nav">
                       <a className="nav-item nav-link" href={url1}>Home</a>
                       <a className="nav-item nav-link" href={url2}>New</a>
-                      <a className="nav-item nav-link active">Current <span className="sr-only">(current)</span></a>
-                      <a className="nav-item nav-link" href={url3}>Log out</a>
+                      <a className="nav-item nav-link" href={url3}>Current</a>
+                      <a className="nav-item nav-link" href={url4}>Log out</a>
                     </div>
                 </div>
             </nav>
+
             <div className="main-container">
                 <div className="col-10 offset-1">
-                    <h4>Your itineraries</h4>
-                    <ul>{itiList}</ul>
+                    <div>
+                        <h3>Showing itineraries for "{this.props.select}"</h3>
+                        <ul>{itiSelection}</ul>
+                    </div>
                 </div>
             </div>
         </Default>
+
     );
   }
 }
 
-module.exports = Userlist;
-
-//3 ways to search
-                // <a href={`/shareitee/${this.props.userIti[0].username}/${iti.iti_id}`}>
-                // <li>{iti.itiname}</li>
-                // </a>
+module.exports = Searchdisplay;
