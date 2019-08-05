@@ -40,11 +40,14 @@ class Userlist extends React.Component {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div className="navbar-nav">
+                    <div className="nav navbar-nav">
                       <a className="nav-item nav-link" href={url1}>Home</a>
                       <a className="nav-item nav-link" href={url2}>New</a>
                       <a className="nav-item nav-link active">Current <span className="sr-only">(current)</span></a>
                       <a className="nav-item nav-link" href={url3}>Log out</a>
+                    </div>
+                    <div className="nav navbar-nav navbar-right">
+                      <p className="header-username" id="username">{username}</p>
                     </div>
                 </div>
             </nav>

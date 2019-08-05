@@ -30,7 +30,7 @@ class Home extends React.Component {
                         </div>
                         <div className="col-3 offset-3">
                             <div className="card wow fadeInRight" data-wow-delay="0.3s">
-                                <div className="card-body">
+                                <div className="card-body" id="frontcard">
 
                                    <div className="text-center">
                                         <h3 className="white-text" id="logintext" >

@@ -23,12 +23,6 @@ ul a:hover {
  * Base structure
  */
 
-html,
-body {
-  height: 100%;
-  background-color: #E7E3D4;
-}
-
 .bg-image{
 	position: fixed;
 	height: 100%;
@@ -40,7 +34,13 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-  z-index: -10;
+  z-index: 0;
+}
+
+html,
+body {
+  height: 100%;
+	background-color: #E7E3D4;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -90,9 +90,12 @@ body {
 
 }
 
+#frontcard {
+	background-color: white;
+}
 
 .card {
-	background-color: #EFEFEF;
+	background-color: #D2FDFF;
 	opacity: 0.8;
 	}
 
@@ -153,12 +156,24 @@ opacity: 0.9;
     text-align: left;
 }
 
+.card-text {
+	font-size: 20px;
+}
+
 .white-text {
 	text-transform: uppercase;
 }
 
 .navbar{
 	background-color: #B4DFE5;
+}
+
+.nav.navbar-nav{
+	width: 100%;
+}
+.nav.navbar-right {
+	justify-content: flex-end;
+	margin-right: 20px;
 }
 
 .navbar-light .navbar-nav .nav-link{
@@ -180,10 +195,16 @@ opacity: 0.9;
 	color: #f4976c;
 	font-size: 30px;
 	text-transform: lowercase;
+	text-shadow: 0.5px 0.5px #757474;
 }
 
 #oneday{
-	max-width: 540px;
+	max-width: 500px;
+	margin-bottom: 20px
+}
+
+#onedayyyy {
+	height: 150px;
 }
 
 #selection{
@@ -196,6 +217,18 @@ opacity: 0.9;
 
 #categorytitle {
 	margin-top: 60px;
+}
+
+.category {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#username{
+	text-transform: uppercase;
+	color: #303C6C;
+	font-weight: bold;
+	font-size: 18px;
 }
 
 @media (min-width: 768px) {

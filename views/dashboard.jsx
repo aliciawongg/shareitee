@@ -42,11 +42,14 @@ class Dashboard extends React.Component {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div className="navbar-nav">
+                    <div className="nav navbar-nav">
                       <a className="nav-item nav-link active">Home <span className="sr-only">(current)</span></a>
                       <a className="nav-item nav-link" href={url1}>New</a>
                       <a className="nav-item nav-link" href={url2}>Current</a>
                       <a className="nav-item nav-link" href={url3}>Log out</a>
+                    </div>
+                    <div className="nav navbar-nav navbar-right">
+                      <p className="header-username" id="username">{username}</p>
                     </div>
                 </div>
             </nav>

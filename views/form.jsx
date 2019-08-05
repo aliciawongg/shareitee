@@ -20,11 +20,14 @@ class Form extends React.Component {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div className="navbar-nav">
+                    <div className="nav navbar-nav">
                       <a className="nav-item nav-link" href={url1}>Home</a>
                       <a className="nav-item nav-link active">New <span className="sr-only">(current)</span></a>
                       <a className="nav-item nav-link" href={url2}>Current</a>
                       <a className="nav-item nav-link" href={url3}>Log out</a>
+                    </div>
+                    <div className="nav navbar-nav navbar-right">
+                      <p className="header-username" id="username">{username}</p>
                     </div>
                 </div>
             </nav>
@@ -35,7 +38,7 @@ class Form extends React.Component {
                         <form method="POST">
                             <div className="form-group">
                                 <label className="col-form-label">Name of itinerary</label>
-                                <input name="itiName" type="text" className="form-control" id="itiName" placeholder="3D2N in Penang"/>
+                                <input name="itiName" type="text" className="form-control" id="itiName" placeholder="example: 3D2N in Penang"/>
                             </div>
                             <div className="form-row">
                               <div className="form-group col-6">
@@ -319,8 +322,9 @@ class Form extends React.Component {
                                 <input type="text" className="form-control" id="day4" name="day4"/>
                               </div>
                             </div>
+                            <p className="category">Season</p>
                             <div className="form-check form-check-inline">
-                                <label>Seasons</label><br/>
+
                                 <input className="form-check-input" type="radio" name="seasons" id="seasons" value="spring"/>
                                 <label className="form-check-label">Spring</label>
                             </div>
@@ -336,9 +340,9 @@ class Form extends React.Component {
                                 <input className="form-check-input" type="radio" name="seasons" id="seasons" value="winter"/>
                                 <label className="form-check-label" >Winter</label>
                             </div>
-
+                            <p className="category">Type of Experience</p>
                             <select className="form-control" name="experience">
-                                    <option value="">- Type of experience -</option>
+                                    <option value="">- If applicable -</option>
                                     <option value="trekking">Trekking</option>
                                     <option value="roadtrip">Road Trip</option>
                                     <option value="diving">Diving</option>
