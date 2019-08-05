@@ -428,7 +428,7 @@ app.get('/shareitee/itinerary/:id', (request, response)=>{
   let id = parseInt(request.params.id);
   console.log('iti id: ', id);
 
-  const queryString = "SELECT itineraries.iti_id, itineraries.itiname, itineraries.city, details.id, details.day, details.places FROM details INNER JOIN itineraries ON (itineraries.iti_id = details.iti_id) WHERE itineraries.iti_id="+id+"ORDER BY details.day ASC";
+  const queryString = "SELECT itineraries.iti_id, itineraries.itiname, itineraries.city, details.id, details.day, details.places, photos.photo_url, photos.details_id FROM itineraries INNER JOIN details ON (itineraries.iti_id = details.iti_id) INNER JOIN photos ON (details.id = photos.details_id) WHERE itineraries.iti_id="+id+"ORDER BY details.day ASC";
 
   pool.query(queryString, (err, result) => {
 

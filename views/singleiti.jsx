@@ -19,7 +19,7 @@ class Singleiti extends React.Component {
                 <div className="card" id="oneday">
                     <div className="row no-gutters"id="onedayyyy">
                         <div className="col-md-4">
-                            <img className="card-img"src="#" />
+                            <img className="card-img" src={iti.photo_url}/>
                         </div>
                         <div className="col-md-8">
                             <div className="card-body-day">

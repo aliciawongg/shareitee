@@ -19,3 +19,9 @@ CREATE TABLE IF NOT EXISTS details (
 	places TEXT,
 	iti_id INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS photos (
+	id SERIAL PRIMARY KEY,
+	photo_url TEXT,
+	details_id INTEGER
+);

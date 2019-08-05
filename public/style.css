@@ -6,7 +6,8 @@ a:hover {
 ul a,
 ul a:focus,
 ul a:hover {
-    color: #333;
+    color: #303C6C;
+    font-size: 17px;
 }
 /* Custom default button */
 .btn-default,
@@ -40,7 +41,7 @@ ul a:hover {
 html,
 body {
   height: 100%;
-	background-color: #E7E3D4;
+	background-color: #C2B9B0;
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -74,7 +75,7 @@ body {
  * Header
  */
 .masthead-brand {
-	font-size: 25px;
+	font-size: 30px;
 	color: #FDFDE8;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -91,11 +92,11 @@ body {
 }
 
 #frontcard {
-	background-color: white;
+	background-color: #C2CAD0;
 }
 
 .card {
-	background-color: #D2FDFF;
+	background-color: #fff;
 	opacity: 0.8;
 	}
 
@@ -105,23 +106,25 @@ body {
 
 .h1-responsive {
 	font-style: italic;
-	color: #FEF7CF;
-	text-shadow: 1px 1px #757474;
+	color: #7E685A;
+	text-shadow: 1px 1px #C6C6C6;
 	font-size: 16px;
+	z-index: 0;
 }
 
 h4{
-	color:#303C6C;
+	color:#7E685A;
 }
 
 h5 {
-	color: #f4976c;
+	color: #303C6C;
 	font-weight: bold;
 }
 
 h6 {
 	font-style: italic;
 	font-weight: bold;
+	/*color: #E7717D;*/
 }
 
 .mb-3 {
@@ -130,7 +133,7 @@ h6 {
 	font-weight: bold;
 	padding-top: 10px;
 	padding-bottom: 0;
-	font-size: 30px;
+	font-size: 28px;
 }
 
 #logintext{
@@ -142,7 +145,7 @@ hr {
 }
 
 #cardcat {
-background-color: #303C6C;
+background-color: #fff;
 opacity: 0.9;
 }
 
@@ -160,12 +163,16 @@ opacity: 0.9;
 	font-size: 20px;
 }
 
+.card-img{
+	height: 100%;
+}
+
 .white-text {
 	text-transform: uppercase;
 }
 
 .navbar{
-	background-color: #B4DFE5;
+	background-color: #E7717D;
 }
 
 .nav.navbar-nav{
@@ -192,10 +199,10 @@ opacity: 0.9;
 
 
 .navbar-light .navbar-brand {
-	color: #f4976c;
+	color: #AFD275;
 	font-size: 30px;
 	text-transform: lowercase;
-	text-shadow: 0.5px 0.5px #757474;
+	text-shadow: 1px 1px #6E6E6E;
 }
 
 #oneday{
