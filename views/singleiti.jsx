@@ -12,8 +12,24 @@ class Singleiti extends React.Component {
     var url2 = "/shareitee/"+username+"/new";
     var url3 = "/shareitee/"+username+"/current";
     var url4 = "/shareitee/logout";
-    var url5 = "/shareitee/itinerary/"+itiId+ "/edit?_method=PUT";
-    var url6 = "/shareitee/itinerary/"+itiId + "/delete?_method=delete";
+
+    let itiDetails = this.props.oneIti.map(iti => {
+           return (
+
+                <div className="card" id="oneday">
+                    <div className="row no-gutters">
+                        <div className="col-md-4">
+                            <img className="card-img"src="#" />
+                        </div>
+                        <div className="col-md-8">
+                            <div className="card-body">
+                                <h5 className="card-title">Day {iti.day}</h5>
+                                    <p className="card-text">{iti.places}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>)
+    });
 
     return (
         <Default>
@@ -36,65 +52,7 @@ class Singleiti extends React.Component {
                 <div className="col-10 offset-1">
                     <h3>{this.props.oneIti[0].itiname}</h3>
                     <h4>{this.props.oneIti[0].city}</h4>
-                        <div className="card" id="oneday">
-                            <div className="row no-gutters">
-                                <div className="col-md-4">
-                                    <img src="/images/travel1.jpg" className="card-img"/>
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">Day {this.props.oneIti[0].day}</h5>
-                                            <p className="card-text">{this.props.oneIti[0].places}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card" id="oneday">
-                            <div className="row no-gutters">
-                                <div className="col-md-4">
-                                    <img src="/images/travel1.jpg" className="card-img"/>
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">Day {this.props.oneIti[1].day}</h5>
-                                            <p className="card-text">{this.props.oneIti[1].places}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="card" id="oneday">
-                            <div className="row no-gutters">
-                                <div className="col-md-4">
-                                    <img src="/images/travel1.jpg" className="card-img"/>
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">Day {this.props.oneIti[2].day}</h5>
-                                            <p className="card-text">{this.props.oneIti[2].places}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card" id="oneday">
-                            <div className="row no-gutters">
-                                <div className="col-md-4">
-                                    <img src="/images/travel1.jpg" className="card-img"/>
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">Day {this.props.oneIti[3].day}</h5>
-                                            <p className="card-text">{this.props.oneIti[3].places}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <form action={url5} method="POST">
-                            <button className="btn btn-secondary" type="submit">Edit</button>
-                        </form>
-                        <form action={url6} method="POST">
-                            <button className="btn btn-secondary" type="submit">Delete</button>
-                        </form>
+                    <div>{itiDetails}</div>
                 </div>
             </div>
         </Default>

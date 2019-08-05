@@ -3,7 +3,7 @@ var Default = require('./layouts/default');
 
 class Userlist extends React.Component {
   render() {
-     console.log('Log in page');
+     console.log('generating user iti');
 
     let username = this.props.userIti[0].username;
     var url1 = "/shareitee/"+username;
@@ -12,10 +12,17 @@ class Userlist extends React.Component {
 
      let itiList = this.props.userIti.map(iti => {
         let link = "/shareitee/itinerary/"+iti.iti_id;
+        var link2 = "/shareitee/itinerary/"+iti.iti_id+ "/edit";
+        var link3 = "/shareitee/itinerary/"+iti.iti_id + "/delete?_method=delete";
         return (
             <div>
-            <li><a href={link}>{iti.itiname}</a></li>
-
+                <li><a href={link}>{iti.itiname}</a></li>
+                <form action={link2} method="GET">
+                    <button className="btn btn-secondary edit" type="submit">Edit</button>
+                </form>
+                <form action={link3} method="POST">
+                    <button className="btn btn-secondary delete" type="submit">Delete</button>
+                </form>
             </div>)
         console.log(itiList);
     });

@@ -17,19 +17,19 @@ class Dashboard extends React.Component {
         var url5 = "/shareitee/search/season";
         var url6 = "/shareitee/search/experience";
 
-        let itiByCountry = this.props.allIti.map(iti => {
+        let itiByCountry = this.props.countries.map(iti => {
             return (
                 <option>{`${getName(iti.country)}`}</option>
                 )
         });
         console.log(itiByCountry);
 
-        let itiBySeason = this.props.allIti.map(iti => {
+        let itiBySeason = this.props.seasons.map(iti => {
             return (
                 <option>{`${iti.season}`}</option>
                 )
         });
-        let itiByExperience= this.props.allIti.map(iti => {
+        let itiByExperience= this.props.experience.map(iti => {
             return (
                 <option>{`${iti.experience}`}</option>
                 )
@@ -75,7 +75,7 @@ class Dashboard extends React.Component {
                                         <div className="card-body">
                                             <h5 className="card-title">Season</h5>
                                             <form action={url5} method="GET">
-                                                <select name="selection">{itiBySeason}</select><br/>
+                                                <select name="selection" id="selection">{itiBySeason}</select><br/>
                                                 <input type="submit" className="btn btn-outline-danger btn-sm" value="Go"/>
                                             </form>
                                         </div>
@@ -88,7 +88,7 @@ class Dashboard extends React.Component {
                                         <div className="card-body">
                                             <h5 class="card-title">Experience</h5>
                                             <form action={url6} method="GET">
-                                                <select name="selection">{itiByExperience}</select><br/>
+                                                <select name="selection" id="selection">{itiByExperience}</select><br/>
                                                 <input type="submit" className="btn btn-outline-danger btn-sm" value="Go"/>
                                             </form>
                                         </div>

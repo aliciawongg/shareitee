@@ -172,52 +172,51 @@ app.get('/shareitee/logout', (request, response) => {
 
 //after log in, display user's page with search and nav bar
 app.get('/shareitee/:username', (request, response)=>{
-  console.log("showing user's dashboard");
-
-  // let name = request.params.username;
-  // console.log(name);
-
-  // const queryString1 = "SELECT user_id, username FROM users WHERE username=$1";
-
-  // let values1=[name];
-  // console.log(values1);
-
-  // pool.query(queryString1, values1, (err, result) => {
-
-  //   if (err) {
-  //       console.error('incorrect username or password:', err.stack);
-  //       response.send( 'query error' );
-  //   } else {
-  //       console.log('query result:', result.rows);
-  //       const data1 = {
-  //           currentUser: result.rows
-  //       }
-  //       console.log(data1);
-
-    const queryString = "SELECT DISTINCT country, season, experience FROM itineraries";
+    console.log("showing user's dashboard");
+    const queryString = "SELECT DISTINCT country FROM itineraries";
 
     pool.query(queryString, (err, result) => {
-
         if (err) {
             console.error('query error:', err.stack);
             response.send( 'query error' );
         } else {
             console.log('query result:', result.rows);
-
             let username = request.cookies['user_id'];
             console.log(username);
-            const data = {
+            var data = {
                     username: username,
-                    allIti: result.rows
+                    countries: result.rows
             }
             console.log(data);
 
-                //response.send('user dashboard');
-            response.render('dashboard', data);
-        }
-    });
+            const queryString2 = "SELECT DISTINCT season FROM itineraries WHERE season!='null'";
+            pool.query(queryString2, (err, result) => {
+                if (err) {
+                    console.error('query error:', err.stack);
+                    response.send( 'query error' );
+                } else {
+                    console.log('query result:', result.rows);
+                    data.seasons = result.rows;
+                    console.log(data);
 
-})
+                    const queryString3 = "SELECT DISTINCT experience FROM itineraries WHERE experience !='null' ";
+                    pool.query(queryString3, (err, result) => {
+                        if (err) {
+                            console.error('query error:', err.stack);
+                            response.send( 'query error' );
+                        } else {
+                            console.log('query result:', result.rows);
+                            data.experience = result.rows;
+                            console.log(data);
+                            //response.send('user dashboard');
+                            response.render('dashboard', data);
+                        }
+                    });
+                }
+            });
+        }
+    })
+});
 
 
 //form to fill in itinerary
@@ -281,7 +280,7 @@ app.post('/shareitee/:username/new', (request, response)=>{
                     });
                 }
                 if (i === 3) {
-                    response.redirect('/shareitee/'+username+'current');
+                    response.redirect('/shareitee/'+username+'/current');
                 }
             }
         }
@@ -294,12 +293,12 @@ app.post('/shareitee/:username/new', (request, response)=>{
 app.get('/shareitee/:username/current', (request, response)=>{
   console.log("showing user's itineraries");
 
-  let name = request.params.username;
-  console.log(name);
+  let username = request.cookies['user_id'];
+  console.log(username);
 
   const queryString = "SELECT users.user_id, users.username, itineraries.iti_id, itineraries.itiname FROM users INNER JOIN itineraries ON (users.user_id = itineraries.user_id) WHERE users.username=$1";
 
-  let values=[name];
+  let values=[username];
   console.log(values);
 
   pool.query(queryString, values, (err, result) => {
@@ -453,19 +452,146 @@ app.get('/shareitee/itinerary/:id', (request, response)=>{
 
 })
 
+//edit itinerary
+app.get('/shareitee/itinerary/:id/edit', (request, response)=>{
+  console.log("showing existing info for itinerary to edit");
 
-// app.post('/shareitee/search', (request, response) => {
-//     console.log("display search results");
+  let Id = parseInt(request.params.id);
+  console.log('iti id: ', Id);
 
-//     //if input recieved for country
-//     queryString = "SELECT from itineraries"
+  const queryString = "SELECT itineraries.iti_id, itineraries.itiname, itineraries.country, itineraries.city, itineraries.season, itineraries.experience, details.id, details.day, details.places FROM details INNER JOIN itineraries ON (itineraries.iti_id = details.iti_id) WHERE itineraries.iti_id="+Id+"ORDER BY details.day ASC";
 
+  pool.query(queryString, (err, result) => {
 
+   if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result.rows);
 
+        let username = request.cookies['user_id'];
 
-//         response.render('display', data);
+        const data = {
+            username: username,
+            itiToEdit: result.rows
+        }
+        console.log(data);
+        //response.send('iti to be edited');
+        response.render('edititi', data);
+}
+})
 
-// });
+})
+
+app.put('/shareitee/itinerary/:id/edit', (request, response)=>{
+    console.log('edits submitted');
+    let Id = parseInt(request.params.id);
+    console.log(Id);
+
+    console.log('rb', request.body);
+
+    let edits = request.body;
+    console.log(edits);
+
+    let queryString = "UPDATE itineraries SET itiname=$1, country=$2, season=$3, experience=$4, city=$5 WHERE iti_id="+Id;
+
+    const values = [edits.itiName, edits.country, edits.season, edits.experience, edits.city];
+
+    console.log('values are ', values);
+
+    pool.query(queryString, values, (err, result) => {
+        console.log('starting update query')
+        if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result.rows);
+        }
+
+    });
+    console.log('no. of days is ', edits.day_num);
+
+    if (edits.day_num === '1') {
+        let editDay = [request.body.day];
+        let editPlaces = [request.body.places];
+        let detailsId = [request.body.detail_id];
+        console.log('editDay is ', editDay );
+        console.log('editPlaces is ', editPlaces);
+        console.log('detailsId is ', detailsId);
+        console.log('detail length is ', editDay.length);
+
+        var queryString2 = "UPDATE details SET places=$1 WHERE id="+detailsId;
+
+        const values2 = editPlaces;
+
+        console.log('values are ', values2);
+
+        pool.query(queryString2, values2, (err, result) => {
+            console.log('starting update query')
+            if (err) {
+            console.error('query error:', err.stack);
+            response.send( 'query error' );
+            } else {
+            console.log('query result:', result.rows);
+            }
+        });
+
+    } else {
+        for (let i=0; i< edits.day.length; i++) {
+
+        let deetsId = edits.detail_id[i];
+        console.log('i and details Id = ', i, deetsId);
+        var queryString3 = "UPDATE details SET places=$1 WHERE id="+deetsId;
+
+        const values3 = [edits.places[i]];
+
+        console.log('values are ', values3);
+
+        pool.query(queryString3, values3, (err, result) => {
+            console.log('starting update query')
+            if (err) {
+            console.error('query error:', err.stack);
+            response.send( 'query error' );
+            } else {
+            console.log('query result:', result.rows);
+            }
+        });
+    }
+}
+    response.redirect("/shareitee/itinerary/"+Id);
+            //response.send('edit');
+
+});
+
+//delete itinerary
+app.delete('/shareitee/itinerary/:id/delete', (request, response) => {
+    console.log('deleting iti');
+
+    let Id = parseInt(request.params.id);
+    console.log(Id);
+
+    let queryString = "DELETE from itineraries WHERE iti_id="+Id;
+    pool.query(queryString, (err, result) => {
+        if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result);
+        }
+    });
+
+    let queryString2 = "DELETE from details WHERE iti_id="+Id;
+    pool.query(queryString2, (err, result) => {
+        if (err) {
+        console.error('query error:', err.stack);
+        response.send( 'query error' );
+        } else {
+        console.log('query result:', result);
+        }
+    });
+    let username = request.cookies['user_id'];
+    response.redirect('/shareitee/'+username+'/current');
+});
 
 
 
