@@ -15,7 +15,7 @@ class Form extends React.Component {
     return (
         <Default>
             <nav className="navbar fixed-top navbar-expand-lg navbar-light">
-                <span className="navbar-brand mb-0 h1">{`${username}`}</span>
+                <span className="navbar-brand mb-0 h1">share.itee</span>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -31,16 +31,15 @@ class Form extends React.Component {
             <div className="main-container">
                 <div className="row">
                     <div className="col-10 offset-1">
-                        <h4>Share Itinerary</h4>
-                        <p style={{fontStyle: 'italic'}}><span style={{color:'red'}}>*</span> indicates mandatory fields</p>
+                        <h4>Submit an itinerary</h4>
                         <form method="POST">
                             <div className="form-group">
-                                <label className="col-form-label">Name of itinerary <span style={{color:'red'}}>*</span></label>
+                                <label className="col-form-label">Name of itinerary</label>
                                 <input name="itiName" type="text" className="form-control" id="itiName" placeholder="3D2N in Penang"/>
                             </div>
                             <div className="form-row">
                               <div className="form-group col-6">
-                                <label>Country <span style={{color:'red'}}>*</span></label>
+                                <label>Country</label>
                                 <select className="form-control" id="country" name="country">
 
                                 <option value="AF">Afghanistan</option>
@@ -295,15 +294,15 @@ class Form extends React.Component {
                                 </select>
                               </div>
                               <div className="form-group col-6">
-                                <label>City <span style={{color:'red'}}>*</span></label>
+                                <label>City</label>
                                 <input type="text" className="form-control" id="city" name="city" placeholder="required"/>
                               </div>
                             </div>
                             <div className="form-row">
                               <div className="form-group col-6">
-                                <label>Day 1 <span style={{color:'red'}}>*</span></label>
+                                <label>Day 1</label>
                                 <input type="text" className="form-control" id="day1" name="day1" placeholder="required"/>
-                                <small className="form-text text-muted" style={{fontStyle: 'italic'}}>List up to 3 places in a day.</small>
+                                <small className="form-text text-muted" style={{fontStyle: 'italic'}}>List up to 3 places in a day</small>
                               </div>
                               <div className="form-group col-6">
                                 <label>Day 2</label>
@@ -321,7 +320,7 @@ class Form extends React.Component {
                               </div>
                             </div>
                             <div className="form-check form-check-inline">
-                                <label>Seasons</label>
+                                <label>Seasons</label><br/>
                                 <input className="form-check-input" type="radio" name="seasons" id="seasons" value="spring"/>
                                 <label className="form-check-label">Spring</label>
                             </div>
@@ -346,7 +345,7 @@ class Form extends React.Component {
                                     <option value="round island cycling">Round island cycling</option>
                             </select>
 
-                            <button type="submit" className="btn btn-outline-danger">Submit</button>
+                            <button type="submit" className="btn btn-light">Submit</button>
                         </form>
                     </div>
                 </div>

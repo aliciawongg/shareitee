@@ -511,6 +511,7 @@ app.put('/shareitee/itinerary/:id/edit', (request, response)=>{
     });
     console.log('no. of days is ', edits.day_num);
 
+//if itinerary has only 1 day, need to place day, places, detail_id into array
     if (edits.day_num === '1') {
         let editDay = [request.body.day];
         let editPlaces = [request.body.places];
@@ -536,31 +537,34 @@ app.put('/shareitee/itinerary/:id/edit', (request, response)=>{
             }
         });
 
+//for itinerary with > 1 day
     } else {
         for (let i=0; i< edits.day.length; i++) {
 
-        let deetsId = edits.detail_id[i];
-        console.log('i and details Id = ', i, deetsId);
-        var queryString3 = "UPDATE details SET places=$1 WHERE id="+deetsId;
+            let deetsId = edits.detail_id[i];
+            console.log('i and details Id = ', i, deetsId);
+            var queryString3 = "UPDATE details SET places=$1 WHERE id="+deetsId;
 
-        const values3 = [edits.places[i]];
+            const values3 = [edits.places[i]];
 
-        console.log('values are ', values3);
+            console.log('values are ', values3);
 
-        pool.query(queryString3, values3, (err, result) => {
-            console.log('starting update query')
-            if (err) {
-            console.error('query error:', err.stack);
-            response.send( 'query error' );
-            } else {
-            console.log('query result:', result.rows);
-            }
-        });
+            pool.query(queryString3, values3, (err, result) => {
+                console.log('starting update query')
+                if (err) {
+                console.error('query error:', err.stack);
+                response.send( 'query error' );
+                } else {
+                console.log('query result:', result.rows);
+                }
+            });
+        }
     }
-}
-    response.redirect("/shareitee/itinerary/"+Id);
-            //response.send('edit');
 
+    let username = request.cookies['user_id'];
+    response.redirect('/shareitee/'+username+'/current');
+    //response.redirect("/shareitee/itinerary/"+Id);
+    //response.send('edit');
 });
 
 //delete itinerary

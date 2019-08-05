@@ -24,7 +24,7 @@ class Searchdisplay extends React.Component {
     return (
        <Default>
        <nav className="navbar fixed-top navbar-expand-lg navbar-light">
-                <span className="navbar-brand mb-0 h1">{`${username}`}</span>
+                <span className="navbar-brand mb-0 h1">share.itee</span>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -41,7 +41,7 @@ class Searchdisplay extends React.Component {
             <div className="main-container">
                 <div className="col-10 offset-1">
                     <div>
-                        <h3>Showing itineraries for "{this.props.select}"</h3>
+                        <h4>Showing itineraries for "{this.props.select}"</h4>
                         <ul>{itiSelection}</ul>
                     </div>
                 </div>

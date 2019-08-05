@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
     return (
         <Default>
             <nav className="navbar fixed-top navbar-expand-lg navbar-light">
-                <span className="navbar-brand mb-0 h1">{`${username}`}</span>
+                <span className="navbar-brand mb-0 h1">share.itee</span>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -54,42 +54,42 @@ class Dashboard extends React.Component {
               <div className="col-10 offset-1">
                     <h4>Find an itinerary</h4>
 
-                        <div className="form-row">
+                        <div className="form-row" id="categorytitle">
                             <div className="form-group col-4">
-                                <div className="card" width= "18rem">
+                                <div className="card" id="cardcat" width= "18rem">
                                     <img src="/images/goldengate.jpg" className="card-img-top" height="200px"/>
                                         <div className="card-body">
                                             <h5 className="card-title">Country</h5>
 
                                             <form action={url4} method="GET">
                                                 <select name="selection">{itiByCountry}</select><br/>
-                                                <input type= "submit" className="btn btn-outline-danger btn-sm" value="Go"/>
+                                                <input type= "submit" className="btn btn-light btn-sm" value="Go"/>
                                             </form>
                                         </div>
                                 </div>
                             </div>
 
                             <div className="form-group col-4">
-                                <div className="card" width= "18rem">
+                                <div className="card" id="cardcat" width= "18rem">
                                     <img src="/images/shirakawago.jpg" className="card-img-top" height="200px"/>
                                         <div className="card-body">
                                             <h5 className="card-title">Season</h5>
                                             <form action={url5} method="GET">
                                                 <select name="selection" id="selection">{itiBySeason}</select><br/>
-                                                <input type="submit" className="btn btn-outline-danger btn-sm" value="Go"/>
+                                                <input type="submit" className="btn btn-light btn-sm" value="Go"/>
                                             </form>
                                         </div>
                                 </div>
                             </div>
 
                             <div className="form-group col-4">
-                                <div className="card" width= "18rem">
-                                    <img src="/images/camping.jpg" className="card-img-top" height="200px"/>
+                                <div className="card" id="cardcat" width= "18rem">
+                                    <img src="/images/skydive2.jpg" className="card-img-top" height="200px"/>
                                         <div className="card-body">
                                             <h5 class="card-title">Experience</h5>
                                             <form action={url6} method="GET">
                                                 <select name="selection" id="selection">{itiByExperience}</select><br/>
-                                                <input type="submit" className="btn btn-outline-danger btn-sm" value="Go"/>
+                                                <input type="submit" className="btn btn-light btn-sm" value="Go"/>
                                             </form>
                                         </div>
                                 </div>

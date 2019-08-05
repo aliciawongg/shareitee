@@ -26,6 +26,7 @@ ul a:hover {
 html,
 body {
   height: 100%;
+  background-color: #E7E3D4;
 }
 
 .bg-image{
@@ -106,6 +107,20 @@ body {
 	font-size: 16px;
 }
 
+h4{
+	color:#303C6C;
+}
+
+h5 {
+	color: #f4976c;
+	font-weight: bold;
+}
+
+h6 {
+	font-style: italic;
+	font-weight: bold;
+}
+
 .mb-3 {
 	color: #FDCFCF;
 	text-shadow: 1px 1px #757474;
@@ -123,9 +138,19 @@ hr {
     margin-top: 0rem;
 }
 
+#cardcat {
+background-color: #303C6C;
+opacity: 0.9;
+}
+
 .card-body {
     padding: 1rem;
     text-align: center;
+}
+
+.card-body-day {
+    padding: 1rem;
+    text-align: left;
 }
 
 .white-text {
@@ -133,21 +158,28 @@ hr {
 }
 
 .navbar{
-	background-color: #EC7866;
+	background-color: #B4DFE5;
 }
 
-.navbar-brand{
-	text-transform: uppercase;
+.navbar-light .navbar-nav .nav-link{
+	color: #ffffff;
 }
+
+.navbar-light .navbar-nav .nav-link.active{
+	color: #303C6C;
+	font-weight: bold;
+}
+
 
 .main-container{
-	padding-top: 70px;
+	padding-top: 90px;
 }
 
 
 .navbar-light .navbar-brand {
-	color: #94E9F2;
-	font-size: 23px;
+	color: #f4976c;
+	font-size: 30px;
+	text-transform: lowercase;
 }
 
 #oneday{
@@ -156,6 +188,14 @@ hr {
 
 #selection{
 	text-transform: capitalize;
+}
+
+#itirows {
+	margin-bottom: 10px;
+}
+
+#categorytitle {
+	margin-top: 60px;
 }
 
 @media (min-width: 768px) {

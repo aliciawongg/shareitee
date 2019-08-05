@@ -15,21 +15,27 @@ class Userlist extends React.Component {
         var link2 = "/shareitee/itinerary/"+iti.iti_id+ "/edit";
         var link3 = "/shareitee/itinerary/"+iti.iti_id + "/delete?_method=delete";
         return (
-            <div>
+            <div className="row" id="itirows">
+                <div className="col-6">
                 <li><a href={link}>{iti.itiname}</a></li>
+                </div>
+                <div className="col-6">
+                    <div className="row">
                 <form action={link2} method="GET">
-                    <button className="btn btn-secondary edit" type="submit">Edit</button>
+                    <button className="btn btn-light edit" type="submit">Edit</button>
                 </form>
                 <form action={link3} method="POST">
-                    <button className="btn btn-secondary delete" type="submit">Delete</button>
+                    <button className="btn btn-light delete" type="submit">Delete</button>
                 </form>
+                </div>
+                </div>
             </div>)
         console.log(itiList);
     });
     return (
         <Default>
             <nav className="navbar fixed-top navbar-expand-lg navbar-light">
-                <span className="navbar-brand mb-0 h1">{`${username}`}</span>
+                <span className="navbar-brand mb-0 h1">share.itee</span>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>

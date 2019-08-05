@@ -22,7 +22,7 @@ class Singleiti extends React.Component {
                             <img className="card-img"src="#" />
                         </div>
                         <div className="col-md-8">
-                            <div className="card-body">
+                            <div className="card-body-day">
                                 <h5 className="card-title">Day {iti.day}</h5>
                                     <p className="card-text">{iti.places}</p>
                             </div>
@@ -34,7 +34,7 @@ class Singleiti extends React.Component {
     return (
         <Default>
             <nav className="navbar fixed-top navbar-expand-lg navbar-light">
-                <span className="navbar-brand mb-0 h1">{`${username}`}</span>
+                <span className="navbar-brand mb-0 h1">share.itee</span>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -50,8 +50,8 @@ class Singleiti extends React.Component {
 
             <div className="main-container">
                 <div className="col-10 offset-1">
-                    <h3>{this.props.oneIti[0].itiname}</h3>
-                    <h4>{this.props.oneIti[0].city}</h4>
+                    <h4>{this.props.oneIti[0].itiname}</h4>
+                    <h6>{this.props.oneIti[0].city}</h6>
                     <div>{itiDetails}</div>
                 </div>
             </div>

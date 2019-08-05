@@ -34,7 +34,7 @@ class Edititi extends React.Component {
     return (
         <Default>
             <nav className="navbar fixed-top navbar-expand-lg navbar-light">
-                <span className="navbar-brand mb-0 h1">{`${username}`}</span>
+                <span className="navbar-brand mb-0 h1">share.itee</span>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -50,7 +50,7 @@ class Edititi extends React.Component {
             <div className="main-container">
                 <div className="row">
                     <div className="col-10 offset-1">
-                        <h1>Edit Itinerary</h1>
+                        <h4>Edit itinerary</h4>
                         <input type="hidden" name="iti_id" value={this.props.itiToEdit[0].iti_id}/>
                         <form action={url5} method="POST">
                             <div className="form-group">
@@ -75,7 +75,7 @@ class Edititi extends React.Component {
 
                             <div className="form-row">{dayDetail}</div>
                              <input type="hidden" name="day_num" value={daylength}/>
-                            <button type="submit" className="btn btn-outline-danger">Submit</button>
+                            <button type="submit" className="btn btn-light">Submit</button>
 
                         </form>
                     </div>
