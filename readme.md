@@ -2,6 +2,7 @@
 An application for users to find and share travel itineraries.
 
 **Applications used**
+- Bootstrap
 - PostgreSQL
 - Express/Node.js
 - React
