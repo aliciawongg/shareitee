@@ -25,7 +25,7 @@ class Edititi extends React.Component {
     let dayDetail = this.props.itiToEdit.map(day => {
         return (
             <div className="form-group col-6">
-            <input type="hidden" name="detail_id" value={day.id}/>
+            <input type="hidden" name="detail_id-{day.id}" value={day.id}/>
             <input type="hidden" name="day" value={day.day}/>
             <label>Day {day.day}</label>
             <input type="text" className="form-control" id="day" name="places" value={day.places}/>

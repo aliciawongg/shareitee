@@ -242,49 +242,56 @@ app.post('/shareitee/:username/new', (request, response)=>{
     const values3 = [username];
 
     pool.query(queryString3, values3, (err,result) => {
+
+
+        if( err || result.rows.length === 0 ){
+
+            // dont want to do further quieries
+        }
+
+
         console.log(result.rows[0]);
         let userId = result.rows[0].user_id;
         console.log(userId);
 
+    //add a row into itineraries table
+        const queryString1 = "INSERT INTO itineraries (itiname, country, season, experience, user_id, city) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
 
-//add a row into itineraries table
-    const queryString1 = "INSERT INTO itineraries (itiname, country, season, experience, user_id, city) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+        const values = [request.body.itiName, request.body.country, request.body.seasons, request.body.experience, userId, request.body.city];
 
-    const values = [request.body.itiName, request.body.country, request.body.seasons, request.body.experience, userId, request.body.city];
+        pool.query(queryString1, values, (err, result) => {
+            console.log("adding to iti table");
+            console.log(result.rows[0] );
+            if (err) {
+                console.error('query error:', err.stack);
+                response.send( 'query error' );
+            } else {
+                console.log('query result:', result.rows);
+                let itiId = result.rows[0].iti_id;
 
-    pool.query(queryString1, values, (err, result) => {
-        console.log("adding to iti table");
-        console.log(result.rows[0] );
-        if (err) {
-            console.error('query error:', err.stack);
-            response.send( 'query error' );
-        } else {
-            console.log('query result:', result.rows);
-            let itiId = result.rows[0].iti_id;
+                let detailsArr = [request.body.day1, request.body.day2, request.body.day3, request.body.day4];
 
-            let detailsArr = [request.body.day1, request.body.day2, request.body.day3, request.body.day4];
+    //then add a row into details table
+                const queryString2 = "INSERT INTO details (day, places, iti_id) VALUES ($1, $2, $3) RETURNING *";
 
-//then add a row into details table
-            const queryString2 = "INSERT INTO details (day, places, iti_id) VALUES ($1, $2, $3) RETURNING *";
-
-            for (var i = 0; i < detailsArr.length; i++) {
-                if (detailsArr[i].length > 0) {
-                    let values2 = [i+1, detailsArr[i], itiId];
-                    pool.query(queryString2, values2, (err, result) => {
-                        if (err) {
-                            console.error('query error:', err.stack);
-                            response.send( 'query error' );
-                        } else {
-                            console.log('query result:', result.rows);
-                        }
-                    });
-                }
-                if (i === 3) {
-                    response.redirect('/shareitee/'+username+'/current');
+                for (var i = 0; i < detailsArr.length; i++) {
+                    if (detailsArr[i].length > 0) {
+                        let values2 = [i+1, detailsArr[i], itiId];
+                        pool.query(queryString2, values2, (err, result) => {
+                            if (err) {
+                                console.error('query error:', err.stack);
+                                response.send( 'query error' );
+                            } else {
+                                console.log('query result:', result.rows);
+                            }
+                        });
+                    }
+                    if (i === 3) {
+                        response.redirect('/shareitee/'+username+'/current');
+                    }
                 }
             }
-        }
-    });
+        });
 
 });
 });
@@ -430,25 +437,25 @@ app.get('/shareitee/itinerary/:id', (request, response)=>{
 
   const queryString = "SELECT itineraries.iti_id, itineraries.itiname, itineraries.city, details.id, details.day, details.places, photos.photo_url, photos.details_id FROM itineraries INNER JOIN details ON (itineraries.iti_id = details.iti_id) INNER JOIN photos ON (details.id = photos.details_id) WHERE itineraries.iti_id="+id+"ORDER BY details.day ASC";
 
-  pool.query(queryString, (err, result) => {
-
-   if (err) {
-        console.error('query error:', err.stack);
-        response.send( 'query error' );
+    pool.query(queryString, (err, result) => {
+       console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+       if (err) {
+            console.error('query error:', err.stack);
+            response.send( 'query error' );
         } else {
-        console.log('query result:', result.rows);
+            console.log('query result:', result.rows);
 
-        let username = request.cookies['user_id'];
+            let username = request.cookies['user_id'];
 
-        const data = {
-            username: username,
-            oneIti: result.rows
+            const data = {
+                username: username,
+                oneIti: result.rows
+            }
+            console.log(data);
+            //response.send('found the iti');
+            response.render('singleiti', data);
         }
-        console.log(data);
-        //response.send('found the iti');
-        response.render('singleiti', data);
-}
-})
+    })
 
 })
 
@@ -501,11 +508,14 @@ app.put('/shareitee/itinerary/:id/edit', (request, response)=>{
 
     pool.query(queryString, values, (err, result) => {
         console.log('starting update query')
+        // this update query is done
         if (err) {
-        console.error('query error:', err.stack);
-        response.send( 'query error' );
+            console.error('query error:', err.stack);
+
+            // dont want to do further queries
+            response.send( 'query error' );
         } else {
-        console.log('query result:', result.rows);
+            console.log('query result:', result.rows);
         }
 
     });
@@ -550,10 +560,10 @@ app.put('/shareitee/itinerary/:id/edit', (request, response)=>{
             console.log('values are ', values3);
 
             pool.query(queryString3, values3, (err, result) => {
-                console.log('starting update query')
+                console.log('9999999999999999999999999999999999999999999999999999999999999999999999999999999999999')
                 if (err) {
-                console.error('query error:', err.stack);
-                response.send( 'query error' );
+                    console.error('query error:', err.stack);
+                    response.send( 'query error' );
                 } else {
                 console.log('query result:', result.rows);
                 }
@@ -562,9 +572,9 @@ app.put('/shareitee/itinerary/:id/edit', (request, response)=>{
     }
 
     let username = request.cookies['user_id'];
-    response.redirect('/shareitee/'+username+'/current');
-    //response.redirect("/shareitee/itinerary/"+Id);
-    //response.send('edit');
+    //response.redirect('/shareitee/'+username+'/current');
+    // response.redirect("/shareitee/itinerary/"+Id);
+    response.send('edit');
 });
 
 //delete itinerary
